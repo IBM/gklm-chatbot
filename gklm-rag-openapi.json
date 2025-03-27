@@ -1,0 +1,54 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Staged Config API",
+      "description": "API for RAG usecase",
+      "version": "1.0.0"
+    },
+    "servers": [
+      {
+        "url": "",
+        "description": "API server"
+      }
+    ],
+    "paths": {
+      "/": {
+        "get": {
+          "summary": "Fetch the answers for the queries asked using RAG approach",
+          "parameters": [
+            {
+              "name": "query",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successfully fetched the information",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "response": {
+                        "type": "string",
+                        "example": "Test response"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Information not found"
+            }
+          }
+        }
+      }
+    }
+}
+  
+  

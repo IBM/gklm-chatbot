@@ -1,0 +1,6 @@
+langchain_milvus
+langchain_ibm
+langchain_community
+langchain
+ibm_watsonx_ai
+bs4

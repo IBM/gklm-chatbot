@@ -1,0 +1,354 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Staged Config API",
+      "description": "API for fetching data from GKLM server",
+      "version": "1.0.0"
+    },
+    "servers": [
+      {
+        "url": "",
+        "description": "API server"
+      }
+    ],
+    "paths": {
+      "/SKLM/rest/v1/keys": {
+        "get": {
+          "summary": "Get keys information",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "in": "header",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "usage",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successfully fetched the keys information",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "example":
+                      [
+                        {
+                          "uuid": "Test Group",
+                          "information": "LTOOperator",
+                          "alias": "",
+                          "key algorithm": "",
+                          "key length": "",
+                          "key type": "",
+                          "owner": ""
+                        }
+                      ]
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "keys information not found"
+            }
+          }
+        },
+        "post": {
+          "summary": "Generate the keys",
+          "description": "Generate keys",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "in": "header",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "numOfKeys": {
+                      "type": "string"
+                    },
+                    "usage": {
+                      "default": "GENERIC"
+                    },
+                    "alias": {
+                        "default": "Assist"
+                    }
+                  },
+                  "example": {
+                    "numOfKeys": "1",
+                    "usage": "Assist",
+                    "alias": "GENERIC"
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "UserAuthId": {
+                        "type": "string",
+                        "description": "Unique identifier for the user"
+                      }
+                    },
+                    "example": {
+                      "UserAuthId": "userauthid123"
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    },
+                    "example": {
+                      "error": "Unauthorized",
+                      "message": "Invalid or missing token"
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Internal Server Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    },
+                    "example": {
+                      "error": "Internal Server Error",
+                      "message": "An unexpected error occurred"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "delete": {
+          "summary": "Delete the key",
+          "description": "Delete the key",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "in": "header",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "alias",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "UserAuthId": {
+                        "type": "string",
+                        "description": "Unique identifier for the user"
+                      }
+                    },
+                    "example": {
+                      "UserAuthId": "userauthid123"
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    },
+                    "example": {
+                      "error": "Unauthorized",
+                      "message": "Invalid or missing token"
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Internal Server Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    },
+                    "example": {
+                      "error": "Internal Server Error",
+                      "message": "An unexpected error occurred"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/SKLM/rest/v1/ckms/deviceGroupMasterKey/rotate": {
+        "post": {
+          "summary": "Rotate master Key",
+          "description": "Rotate Master key",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "in": "header",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "force": {
+                      "type": "string",
+                      "default": "true"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string"
+                      }
+                    },
+                    "example": {
+                      "status": "CTGKM3300I Successfully rotated endpoint master key on 1 endpoints"
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    },
+                    "example": {
+                      "error": "Unauthorized",
+                      "message": "Invalid or missing token"
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Internal Server Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    },
+                    "example": {
+                      "error": "Internal Server Error",
+                      "message": "An unexpected error occurred"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  

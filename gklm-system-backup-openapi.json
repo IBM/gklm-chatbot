@@ -1,0 +1,538 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Staged Config API",
+    "description": "API for fetching data from GKLM server",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "",
+      "description": "API server"
+    }
+  ],
+  "paths": {
+    "/SKLM/rest/v1/ckms/login": {
+      "post": {
+        "summary": "Generate the user auth id",
+        "description": "Generate the user auth id",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userid": {
+                    "type": "string",
+                    "description": "userid to generate the user token"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "user password to generate the user token"
+                  }
+                },
+                "example": {
+                  "userid": "abc",
+                  "password": "abc"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "UserAuthId": {
+                      "type": "string",
+                      "description": "Unique identifier for the user"
+                    }
+                  },
+                  "example": {
+                    "UserAuthId": "userauthid123"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "error": "Unauthorized",
+                    "message": "Invalid or missing token"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "error": "Internal Server Error",
+                    "message": "An unexpected error occurred"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "20.0"
+            }
+          }
+        ]
+      }
+    },
+    "/SKLM/rest/v1/ckms/versionInfo": {
+      "get": {
+        "summary": "Get version information",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched the version information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tklm_version": {
+                      "type": "string",
+                      "example": "4.2.1.0"
+                    },
+                    "db_version": {
+                      "type": "string",
+                      "example": "DB2/NT64 SQL110540"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Version information not found"
+          }
+        }
+      }
+    },
+    "/SKLM/rest/v1/systemDetails": {
+      "get": {
+        "summary": "Get system details",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched the system details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "IPAddr": {
+                      "type": "string",
+                      "example": "10.221.192.101"
+                    },
+                    "KMIPTLSport": {
+                      "type": "string",
+                      "example": "5696"
+                    },
+                    "KMIPConfigured": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "TLSConfigured": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "TLSPort": {
+                      "type": "string",
+                      "example": "1441"
+                    },
+                   
+                    "TCPPort": {
+                      "type": "string",
+                      "example": "3801"
+                    },
+                    "KMIPStatus": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "System details not found"
+          }
+        }
+      }
+    },
+    "/SKLM/rest/v1/health": {
+      "get": {
+        "summary": "Check for the server health",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched the server health",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "overall": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Server health not found"
+          }
+        }
+      }
+    },
+    "/SKLM/rest/v1/keyServerStatus": {
+      "get": {
+        "summary": "Check for the status of key server",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched the key server status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Keystores initialized": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "TCP transports initialized": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "TLS transports initialized": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "Transport TLS certificate alias": {
+                      "type": "string",
+                      "example": "sslserver"
+                    },
+                    "KMIP TLS port": {
+                      "type": "string",
+                      "example": "5696"
+                    },
+                   
+                    "KMIP TLS transports initialized": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Server health not found"
+          }
+        }
+      }
+    },
+    "/SKLM/rest/v1/ckms/backups/lastBackup": {
+      "get": {
+        "summary": "Get the last backup",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched the server health",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "isLastBackupAvailable": {
+                      "type": "boolean"
+                    },
+                    "backupTimestamp": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Server health not found"
+          }
+        }
+      }
+    },
+    "/SKLM/rest/v1/ckms/backups/isrunning": {
+      "get": {
+        "summary": "Check if backup task is running",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched the server health",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Server health not found"
+          }
+        }
+      }
+    },
+    "/SKLM/rest/v1/ckms/backups/result": {
+      "get": {
+        "summary": "Check if last backup is success or failed",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched the server health",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Server health not found"
+          }
+        }
+      }
+    },
+    "/SKLM/rest/v1/backupInfo": {
+      "get": {
+        "summary": "Get the backup information",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched the server health",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "IsLastBackupDateAvailable": {
+                      "type": "boolean"
+                    },
+                    "lastBackupDate" : {
+                      "type": "string"
+                    },
+                    "IsBackupBeforeServing": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Server health not found"
+          }
+        }
+      }
+    },
+    "/SKLM/rest/v1/ckms/backupRestore/progress": {
+      "get": {
+        "summary": "To determine the current phase of restore task",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched the server health",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Server health not found"
+          }
+        }
+      }
+    },
+    "/SKLM/rest/v1/ckms/restore/result": {
+      "get": {
+        "summary": "To determine the success and failure of completed restore task",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched the server health",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Server health not found"
+          }
+        }
+      }
+    }
+  }
+}
+

@@ -1,0 +1,78 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Staged Config API",
+      "description": "API for Usermanagement usecases",
+      "version": "1.0.0"
+    },
+    "servers": [
+      {
+        "url": "",
+        "description": "API server"
+      }
+    ],
+    "paths": {
+      "/": {
+        "get": {
+          "summary": "User and group related details",
+          "parameters": [
+            {
+              "name": "userName",
+              "in": "query",
+              "schema": {
+                "type": "string"
+               }
+            },
+            {
+                "name": "groupName",
+                "in": "query",
+                "schema": {
+                  "type": "string"
+                 }
+              },
+              {
+                "name": "type",
+                "in": "query",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                 }
+              },
+              {
+                "name": "userAuthId",
+                "in": "query",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                 }
+              }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successfully fetched the information",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "response": {
+                        "type": "string"
+                      },
+                      "usersList": {
+                        "type": "array"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Information not found"
+            }
+          }
+        }
+      }
+    }
+}
+  
+  
